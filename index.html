@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Didáctica: La Célula - Ciencias Naturales 5°</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* IDENTIDAD VISUAL ESCOLARIS */
+        :root {
+            --naranja-quemado: #db6015;
+            --amarillo-dorado: #f7be00;
+            --azul-oscuro: #244b5a;
+            --rojo-ladrillo: #993921;
+            --azul-claro: #f0f8ff;
+            --blanco: #ffffff;
+            --verde-bio: #27ae60;
+            --morado-celula: #8e44ad;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--azul-claro);
+            overflow: hidden;
+        }
+
+        .contenedor-principal {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--azul-claro) 0%, var(--blanco) 100%);
+        }
+
+        .slide {
+            width: 95%;
+            max-width: 900px;
+            height: 95vh;
+            background: var(--blanco);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(36, 75, 90, 0.2);
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow-y: auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.activo {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* NAVEGACIÓN CON FLECHAS */
+        .navegacion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
+            left: 0;
+            top: 0;
+        }
+
+        .flecha {
+            width: 60px;
+            height: 60px;
+            background: var(--naranja-quemado);
+            color: var(--blanco);
+            border: none;
+            border-radius: 50%;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: all;
+            transition: all 0.3s ease;
+            margin: 0 15px;
+            box-shadow: 0 4px 15px rgba(219, 96, 21, 0.3);
+        }
+
+        .flecha:hover {
+            background: var(--rojo-ladrillo);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(219, 96, 21, 0.5);
+        }
+
+        .flecha:active {
+            transform: scale(0.95);
+        }
+
+        /* CONTADOR DE DIAPOSITIVAS */
+        .contador {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 14px;
+            color: var(--azul-oscuro);
+            font-weight: bold;
+            background: var(--amarillo-dorado);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        /* ESTILOS DE TEXTO */
+        h1 {
+            color: var(--azul-oscuro);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        h2 {
+            color: var(--naranja-quemado);
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: bold;
+            border-bottom: 3px solid var(--amarillo-dorado);
+            padding-bottom: 15px;
+        }
+
+        h3 {
+            color: var(--azul-oscuro);
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        /* PORTADA */
+        .portada {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .portada h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, var(--morado-celula), var(--naranja-quemado));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .metadata {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .badge {
+            background: var(--amarillo-dorado);
+            color: var(--azul-oscuro);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        .ilustracion {
+            font-size: 120px;
+            margin: 15px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .mensaje {
+            background: linear-gradient(135deg, var(--azul-claro), #e6f3ff);
+            padding: 20px;
+            border-left: 5px solid var(--morado-celula);
+            border-radius: 8px;
+            font-size: 1.2em;
+            color: var(--azul-oscuro);
+            font-weight: 500;
+        }
+
+        /* TARJETAS GENERALES */
+        .tarjeta {
+            background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
+            border: 2px solid var(--naranja-quemado);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(219, 96, 21, 0.2);
+            border-color: var(--morado-celula);
+        }
+
+        .tarjeta-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tarjeta-titulo {
+            color: var(--azul-oscuro);
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .tarjeta-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .tarjeta::after {
+            content: '👆 Haz clic para descubrir';
+            display: block;
+            font-size: 0.8em;
+            color: var(--naranja-quemado);
+            font-style: italic;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        /* GRID DE TARJETAS */
+        .grid-tarjetas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* PREGUNTAS INTERACTIVAS */
+        .pregunta-card {
+            background: linear-gradient(135deg, #fff9e6 0%, #fffdf5 100%);
+            border-left: 5px solid var(--amarillo-dorado);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .pregunta-card:hover {
+            background: linear-gradient(135deg, #fff5cc 0%, #fffef0 100%);
+            transform: translateX(5px);
+        }
+
+        .pregunta-texto {
+            font-weight: bold;
+            color: var(--azul-oscuro);
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .pista {
+            color: var(--naranja-quemado);
+            font-size: 0.9em;
+            display: none;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .pista.mostrada {
+            display: block;
+        }
+
+        .pregunta-card::after {
+            content: '👆 Haz clic para ver la pista';
+            display: block;
+            font-size: 0.8em;
+            color: var(--naranja-quemado);
+            font-style: italic;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        /* CONCEPTOS CLAVE */
+        .concepto-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8f6 100%);
+            border: 2px solid var(--verde-bio);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .concepto-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.2);
+        }
+
+        .concepto-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .concepto-nombre {
+            color: var(--azul-oscuro);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .concepto-card::after {
+            content: '👆 Haz clic para saber más';
+            display: block;
+            font-size: 0.8em;
+            color: var(--verde-bio);
+            font-style: italic;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(36, 75, 90, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-contenido {
+            background-color: var(--blanco);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .cerrar-modal {
+            color: var(--naranja-quemado);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .cerrar-modal:hover {
+            color: var(--rojo-ladrillo);
+        }
+
+        /* BOTONES */
+        .boton {
+            background: var(--naranja-quemado);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .boton:hover {
+            background: var(--rojo-ladrillo);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(219, 96, 21, 0.3);
+        }
+
+        .boton.correcto {
+            background: var(--verde-bio);
+        }
+
+        .boton.correcto:hover {
+            background: #229954;
+        }
+
+        .boton-secundario {
+            background: var(--azul-oscuro);
+            color: white;
+        }
+
+        .boton-secundario:hover {
+            background: #1a364a;
+        }
+
+        /* RETROALIMENTACIÓN */
+        .retroalimentacion {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .retroalimentacion.activa {
+            display: block;
+        }
+
+        .retroalimentacion.correcta {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid var(--verde-bio);
+        }
+
+        .retroalimentacion.incorrecta {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid var(--rojo-ladrillo);
+        }
+
+        /* OPCIONES MÚLTIPLE */
+        .opcion {
+            background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .opcion:hover {
+            border-color: var(--naranja-quemado);
+            background: #fff9e6;
+            transform: translateX(5px);
+        }
+
+        .opcion.respondido {
+            cursor: default;
+        }
+
+        .opcion.correcta {
+            background: #d4edda;
+            border-color: var(--verde-bio);
+            color: #155724;
+            font-weight: bold;
+        }
+
+        .opcion.incorrecta {
+            background: #f8d7da;
+            border-color: var(--rojo-ladrillo);
+            color: #721c24;
+        }
+
+        /* JUEGO */
+        .juego-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .juego-item {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border: 2px solid var(--morado-celula);
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .juego-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(142, 68, 173, 0.2);
+        }
+
+        .juego-item.correcto {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-color: var(--verde-bio);
+        }
+
+        .juego-icon {
+            font-size: 3em;
+            margin-bottom: 8px;
+        }
+
+        .juego-nombre {
+            color: var(--azul-oscuro);
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        /* PROGRESO */
+        .progreso-barra {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 25px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progreso-relleno {
+            background: linear-gradient(90deg, var(--verde-bio), var(--amarillo-dorado));
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: width 0.5s ease;
+        }
+
+        /* APLICACIÓN PRÁCTICA */
+        .escenario {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 2px solid var(--naranja-quemado);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .escenario-icono {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .escenario-titulo {
+            color: var(--azul-oscuro);
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .escenario-descripcion {
+            color: #555;
+            font-size: 1em;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* REFLEXIÓN */
+        .grupo-reflexion {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border: 2px solid var(--morado-celula);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .opcion-reflexion {
+            background: var(--blanco);
+            border: 2px solid var(--morado-celula);
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .opcion-reflexion:hover {
+            background: #f3e5f5;
+            transform: translateX(8px);
+        }
+
+        .opcion-reflexion.seleccionada {
+            background: var(--morado-celula);
+            color: white;
+            border-color: var(--morado-celula);
+        }
+
+        /* SELLO DE LOGRO */
+        .sello-logro {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .icono-sello {
+            font-size: 150px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .texto-sello {
+            font-size: 2em;
+            color: var(--morado-celula);
+            font-weight: bold;
+        }
+
+        .subtexto-sello {
+            font-size: 1.2em;
+            color: var(--naranja-quemado);
+        }
+
+        /* CONTENIDO DENSO */
+        .contenido-denso {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .bloque-info {
+            background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+            border-left: 5px solid var(--naranja-quemado);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .bloque-info h3 {
+            color: var(--morado-celula);
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .bloque-info p {
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        /* ELEMENTO INTERACTIVO ESPECIAL */
+        .elemento-interactivo {
+            background: linear-gradient(135deg, var(--amarillo-dorado), #ffd966);
+            border: 2px solid var(--naranja-quemado);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .elemento-interactivo:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(219, 96, 21, 0.3);
+        }
+
+        .elemento-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .elemento-texto {
+            font-weight: bold;
+            color: var(--azul-oscuro);
+            font-size: 1em;
+        }
+
+        .elemento-interactivo::after {
+            content: '👆 Haz clic aquí';
+            display: block;
+            font-size: 0.8em;
+            color: var(--azul-oscuro);
+            font-style: italic;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <div class="navegacion">
+            <button class="flecha" onclick="cambiarSlide(-1)">⬅️</button>
+            <button class="flecha" onclick="cambiarSlide(1)">➡️</button>
+        </div>
+
+        <!-- SLIDE 1: PORTADA -->
+        <div class="slide activo">
+            <div class="portada">
+                <h1>🧬 LA CÉLULA</h1>
+                <div class="ilustracion">🔬</div>
+                <div class="metadata">
+                    <div class="badge">Ciencias Naturales</div>
+                    <div class="badge">5° Primaria</div>
+                    <div class="badge">Lección 2</div>
+                </div>
+                <div class="mensaje">
+                    ¡Prepárate para descubrir el mundo microscópico! Aprenderás qué son las células, sus partes y funciones. ¡Eres un científico!
+                </div>
+            </div>
+            <div class="contador">1 / 13</div>
+        </div>
+
+        <!-- SLIDE 2: OBJETIVOS -->
+        <div class="slide">
+            <h2>🎯 Objetivos de Aprendizaje</h2>
+            <div class="grid-tarjetas">
+                <div class="tarjeta" onclick="mostrarDetalle(this, '📌 Entenderás qué es una célula: la unidad más pequeña de vida de los seres vivos.')">
+                    <div class="tarjeta-icon">📌</div>
+                    <div class="tarjeta-titulo">Definición de célula</div>
+                    <div class="tarjeta-desc">¿Qué es la unidad de vida?</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarDetalle(this, '🔑 Identificarás las partes principales de la célula: membrana, citoplasma y núcleo.')">
+                    <div class="tarjeta-icon">🔑</div>
+                    <div class="tarjeta-titulo">Partes de la célula</div>
+                    <div class="tarjeta-desc">Conocerás sus componentes</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarDetalle(this, '🔬 Distinguirás entre células animales y vegetales y sus diferencias.')">
+                    <div class="tarjeta-icon">🔬</div>
+                    <div class="tarjeta-titulo">Tipos de células</div>
+                    <div class="tarjeta-desc">Animal vs Vegetal</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarDetalle(this, '⚙️ Comprenderás las funciones vitales de la célula: nutrición, crecimiento y reproducción.')">
+                    <div class="tarjeta-icon">⚙️</div>
+                    <div class="tarjeta-titulo">Funciones de la célula</div>
+                    <div class="tarjeta-desc">¿Qué hace vivir a la célula?</div>
+                </div>
+            </div>
+            <div id="detalle-objetivo" class="retroalimentacion"></div>
+            <div class="contador">2 / 13</div>
+        </div>
+
+        <!-- SLIDE 3: ACTIVACIÓN DE CONOCIMIENTOS -->
+        <div class="slide">
+            <h2>🧠 ¿Qué ya sabes?</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Haz clic en cada pregunta para ver una pista:</p>
+            
+            <div class="pregunta-card" onclick="mostrarPista(this)">
+                <div class="pregunta-texto">❓ ¿Todos los seres vivos tienen células?</div>
+                <div class="pista">¡Sí! Desde las bacterias hasta los elefantes... todos están hechos de células. Incluso tú.</div>
+            </div>
+
+            <div class="pregunta-card" onclick="mostrarPista(this)">
+                <div class="pregunta-texto">❓ ¿Qué se encuentra dentro de la célula?</div>
+                <div class="pista">Dentro hay un centro especial llamado núcleo, líquido con sustancias (citoplasma) y una membrana que la rodea.</div>
+            </div>
+
+            <div class="pregunta-card" onclick="mostrarPista(this)">
+                <div class="pregunta-texto">❓ ¿Son iguales todas las células?</div>
+                <div class="pista">¡No! Las células de plantas son distintas a las de animales. Las células pueden ser muy diferentes según su función.</div>
+            </div>
+
+            <div class="pregunta-card" onclick="mostrarPista(this)">
+                <div class="pregunta-texto">❓ ¿Podemos ver las células sin microscopio?</div>
+                <div class="pista">¡No! Las células son tan pequeñas que necesitamos un microscopio para verlas. Son microscópicas.</div>
+            </div>
+
+            <div class="contador">3 / 13</div>
+        </div>
+
+        <!-- SLIDE 4: CONCEPTO CLAVE - ¿QUÉ ES LA CÉLULA? -->
+        <div class="slide">
+            <h2>💡 ¿Qué es la Célula?</h2>
+            
+            <div class="bloque-info">
+                <h3>📖 Definición Científica</h3>
+                <p>La célula es la unidad más pequeña de vida. Es como el LEGO de la vida: todos los seres vivos están hechos de células.</p>
+            </div>
+
+            <div class="bloque-info">
+                <h3>🌍 Datos Interesantes</h3>
+                <p>Tu cuerpo tiene más de 37 BILLONES de células. ¡La mayoría tan pequeña que necesitas un microscopio para verla!</p>
+            </div>
+
+            <div class="bloque-info">
+                <h3>🔭 Ejemplos de Seres Vivos</h3>
+                <p><strong>Unicelulares:</strong> Bacterias (1 célula) | <strong>Pluricelulares:</strong> Plantas, Animales, Humanos (millones de células)</p>
+            </div>
+
+            <div class="bloque-info">
+                <h3>✨ Características Clave</h3>
+                <p>Todas las células: nacen, crecen, se reproducen y mueren. ¡Son vivas!</p>
+            </div>
+
+            <div class="contador">4 / 13</div>
+        </div>
+
+        <!-- SLIDE 5: PARTES DE LA CÉLULA - ANIMALES -->
+        <div class="slide">
+            <h2>🔬 Partes de una Célula Animal</h2>
+            
+            <div class="concepto-card" onclick="abrirModal('modal-membrana')">
+                <div class="concepto-icon">🚪</div>
+                <div class="concepto-nombre">MEMBRANA CELULAR</div>
+                <p style="font-size: 0.85em; color: #666; margin-top: 8px;">La puerta que controla la entrada y salida</p>
+            </div>
+
+            <div class="concepto-card" onclick="abrirModal('modal-citoplasma')">
+                <div class="concepto-icon">💧</div>
+                <div class="concepto-nombre">CITOPLASMA</div>
+                <p style="font-size: 0.85em; color: #666; margin-top: 8px;">Líquido gelatinoso donde ocurren funciones vitales</p>
+            </div>
+
+            <div class="concepto-card" onclick="abrirModal('modal-nucleo')">
+                <div class="concepto-icon">🎯</div>
+                <div class="concepto-nombre">NÚCLEO</div>
+                <p style="font-size: 0.85em; color: #666; margin-top: 8px;">Centro de control con la información genética</p>
+            </div>
+
+            <div id="modal-membrana" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('modal-membrana')">&times;</span>
+                    <h3>🚪 MEMBRANA CELULAR</h3>
+                    <p><strong>¿Qué es?</strong> Es una "piel" muy delgada que rodea toda la célula.</p>
+                    <p><strong>Función:</strong> Controla qué entra y qué sale de la célula. Es como una puerta selectiva.</p>
+                    <p><strong>Característica:</strong> Es tan fina que es invisible sin microscopio.</p>
+                </div>
+            </div>
+
+            <div id="modal-citoplasma" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('modal-citoplasma')">&times;</span>
+                    <h3>💧 CITOPLASMA</h3>
+                    <p><strong>¿Qué es?</strong> Un líquido gelatinoso y transparente que llena toda la célula.</p>
+                    <p><strong>Función:</strong> Contiene nutrientes y estructuras especiales que realizan tareas vitales. Es donde ocurre la "acción".</p>
+                    <p><strong>Composición:</strong> Agua, proteínas, grasas y otras moléculas necesarias para la vida.</p>
+                </div>
+            </div>
+
+            <div id="modal-nucleo" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('modal-nucleo')">&times;</span>
+                    <h3>🎯 NÚCLEO</h3>
+                    <p><strong>¿Qué es?</strong> Una estructura esférica dentro de la célula, como un "cerebro".</p>
+                    <p><strong>Función:</strong> Controla todas las actividades de la célula y contiene el ADN (información genética).</p>
+                    <p><strong>Dato importante:</strong> No todas las células tienen núcleo (las bacterias no).</p>
+                </div>
+            </div>
+
+            <div class="contador">5 / 13</div>
+        </div>
+
+        <!-- SLIDE 6: CÉLULA ANIMAL VS VEGETAL -->
+        <div class="slide">
+            <h2>🌱 Célula Animal vs Célula Vegetal</h2>
+            
+            <div class="contenido-denso">
+                <div class="bloque-info">
+                    <h3>🐕 CÉLULA ANIMAL</h3>
+                    <p><strong>Partes:</strong> Membrana, Citoplasma, Núcleo</p>
+                    <p><strong>Forma:</strong> Redonda o irregular</p>
+                    <p><strong>Ejemplos:</strong> Células de tu piel, sangre, músculos</p>
+                </div>
+
+                <div class="bloque-info">
+                    <h3>🌿 CÉLULA VEGETAL</h3>
+                    <p><strong>Partes:</strong> Membrana, Citoplasma, Núcleo + PARED CELULAR + CLOROPLASTOS</p>
+                    <p><strong>Forma:</strong> Rectángulo o cuadrado</p>
+                    <p><strong>Ejemplos:</strong> Células de hojas, tallos, raíces</p>
+                </div>
+            </div>
+
+            <div class="elemento-interactivo" onclick="mostrarDiferencia(this)">
+                <div class="elemento-icon">📍</div>
+                <div class="elemento-texto">¿Qué hace ÚNICA a la célula vegetal?</div>
+            </div>
+
+            <div id="diferencia-vegetal" class="retroalimentacion"></div>
+
+            <div class="contador">6 / 13</div>
+        </div>
+
+        <!-- SLIDE 7: CARACTERÍSTICAS ESPECIALES VEGETALES -->
+        <div class="slide">
+            <h2>✨ Estructuras Especiales Vegetales</h2>
+            
+            <div class="elemento-interactivo" onclick="abrirModalEspecial('pared-celular')">
+                <div class="elemento-icon">🧱</div>
+                <div class="elemento-texto">PARED CELULAR</div>
+            </div>
+
+            <div class="elemento-interactivo" onclick="abrirModalEspecial('cloroplasto')">
+                <div class="elemento-icon">🟢</div>
+                <div class="elemento-texto">CLOROPLASTOS</div>
+            </div>
+
+            <div class="elemento-interactivo" onclick="abrirModalEspecial('vacuola')">
+                <div class="elemento-icon">💾</div>
+                <div class="elemento-texto">VACUOLA GRANDE</div>
+            </div>
+
+            <div id="pared-celular" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('pared-celular')">&times;</span>
+                    <h3>🧱 PARED CELULAR</h3>
+                    <p><strong>¿Qué es?</strong> Una cubierta rígida fuera de la membrana celular, como un "esqueleto".</p>
+                    <p><strong>Función:</strong> Da rigidez y forma a la planta, la protege y la sostiene.</p>
+                    <p><strong>Material:</strong> Celulosa, una sustancia muy resistente.</p>
+                </div>
+            </div>
+
+            <div id="cloroplasto" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('cloroplasto')">&times;</span>
+                    <h3>🟢 CLOROPLASTOS</h3>
+                    <p><strong>¿Qué es?</strong> Estructuras verdes dentro de la célula vegetal.</p>
+                    <p><strong>Función:</strong> Realizan la fotosíntesis (convierten luz solar en alimento).</p>
+                    <p><strong>Dato:</strong> ¡Por eso las plantas son verdes! Contienen clorofila.</p>
+                </div>
+            </div>
+
+            <div id="vacuola" class="modal">
+                <div class="modal-contenido">
+                    <span class="cerrar-modal" onclick="cerrarModal('vacuola')">&times;</span>
+                    <h3>💾 VACUOLA GRANDE</h3>
+                    <p><strong>¿Qué es?</strong> Un saco grande que ocupa casi toda la célula vegetal.</p>
+                    <p><strong>Función:</strong> Almacena agua, nutrientes y desechos. Mantiene la turgencia (rigidez).</p>
+                    <p><strong>Tamaño:</strong> En plantas adultas puede ocupar el 90% de la célula.</p>
+                </div>
+            </div>
+
+            <div class="contador">7 / 13</div>
+        </div>
+
+        <!-- SLIDE 8: FUNCIONES VITALES DE LA CÉLULA -->
+        <div class="slide">
+            <h2>⚙️ Funciones Vitales de la Célula</h2>
+            
+            <div class="grid-tarjetas">
+                <div class="tarjeta" onclick="mostrarFuncion(0)">
+                    <div class="tarjeta-icon">🍽️</div>
+                    <div class="tarjeta-titulo">NUTRICIÓN</div>
+                    <div class="tarjeta-desc">Obtiene energía</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarFuncion(1)">
+                    <div class="tarjeta-icon">📈</div>
+                    <div class="tarjeta-titulo">CRECIMIENTO</div>
+                    <div class="tarjeta-desc">Aumenta de tamaño</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarFuncion(2)">
+                    <div class="tarjeta-icon">👶</div>
+                    <div class="tarjeta-titulo">REPRODUCCIÓN</div>
+                    <div class="tarjeta-desc">Genera nuevas células</div>
+                </div>
+                <div class="tarjeta" onclick="mostrarFuncion(3)">
+                    <div class="tarjeta-icon">🧬</div>
+                    <div class="tarjeta-titulo">HERENCIA</div>
+                    <div class="tarjeta-desc">Transmite información</div>
+                </div>
+            </div>
+
+            <div id="detalle-funcion" class="retroalimentacion"></div>
+
+            <div class="contador">8 / 13</div>
+        </div>
+
+        <!-- SLIDE 9: ACTIVIDAD - SELECCIÓN MÚLTIPLE -->
+        <div class="slide">
+            <h2>🎯 Actividad de Comprensión</h2>
+            
+            <div style="margin-bottom: 15px;">
+                <p style="font-weight: bold; margin-bottom: 12px;">❓ Pregunta 1: ¿Cuál es la unidad más pequeña de vida?</p>
+                <div class="opcion" onclick="verificarRespuesta(this, true, '¡Exacto! La célula es la unidad básica de vida.')">La célula</div>
+                <div class="opcion" onclick="verificarRespuesta(this, false, 'No exactamente. La célula es mucho más pequeña que un átomo visible.')">Un átomo</div>
+                <div class="opcion" onclick="verificarRespuesta(this, false, 'No. El tejido está formado por muchas células juntas.')">Un tejido</div>
+                <div id="retroalimentacion-p1" class="retroalimentacion"></div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <p style="font-weight: bold; margin-bottom: 12px;">❓ Pregunta 2: ¿Cuál de estas es una característica SOLO de células vegetales?</p>
+                <div class="opcion" onclick="verificarRespuesta(this, false, 'Las dos tienen membrana celular.')">Membrana celular</div>
+                <div class="opcion" onclick="verificarRespuesta(this, true, '¡Correcto! Las plantas tienen pared celular para sostenerse.')">Pared celular</div>
+                <div class="opcion" onclick="verificarRespuesta(this, false, 'No. Ambas tienen núcleo.')">Núcleo</div>
+                <div id="retroalimentacion-p2" class="retroalimentacion"></div>
+            </div>
+
+            <div class="contador">9 / 13</div>
+        </div>
+
+        <!-- SLIDE 10: JUEGO - CLASIFICACIÓN -->
+        <div class="slide">
+            <h2>🎮 Juego: ¿Animal o Vegetal?</h2>
+            <p style="text-align: center; margin-bottom: 15px; font-weight: bold;">Haz clic en cada célula y elige a qué tipo pertenece:</p>
+            
+            <div class="juego-grid">
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula con pared', '🧱')">
+                    <div class="juego-icon">🧱</div>
+                    <div class="juego-nombre">Célula rigida</div>
+                </div>
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula verde', '🟢')">
+                    <div class="juego-icon">🟢</div>
+                    <div class="juego-nombre">Color verde</div>
+                </div>
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula sin pared', '🔵')">
+                    <div class="juego-icon">🔵</div>
+                    <div class="juego-nombre">Forma redonda</div>
+                </div>
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula rectangular', '⬜')">
+                    <div class="juego-icon">⬜</div>
+                    <div class="juego-nombre">Forma cuadrada</div>
+                </div>
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula muscular', '💪')">
+                    <div class="juego-icon">💪</div>
+                    <div class="juego-nombre">Tu músculo</div>
+                </div>
+                <div class="juego-item" onclick="mostrarOpcionesJuego(this, 'Célula de hoja', '🍃')">
+                    <div class="juego-icon">🍃</div>
+                    <div class="juego-nombre">De una hoja</div>
+                </div>
+            </div>
+
+            <div id="modal-juego" class="modal">
+                <div class="modal-contenido">
+                    <h3 id="pregunta-juego"></h3>
+                    <div style="margin: 20px 0;">
+                        <button class="boton" onclick="responderJuego(this, 'animal')">🐕 ANIMAL</button>
+                        <button class="boton correcto" onclick="responderJuego(this, 'vegetal')">🌿 VEGETAL</button>
+                    </div>
+                    <div id="retro-juego" class="retroalimentacion"></div>
+                </div>
+            </div>
+
+            <div id="retroalimentacion-juego" class="retroalimentacion" style="margin-top: 15px;"></div>
+            <div id="progreso-juego" style="display: none; text-align: center; font-weight: bold; color: var(--verde-bio); margin-top: 15px;">
+                <span id="texto-progreso"></span>
+                <button class="boton-secundario" onclick="reiniciarJuego()" style="margin-top: 10px;">🔄 Reintentar</button>
+            </div>
+
+            <div class="contador">10 / 13</div>
+        </div>
+
+        <!-- SLIDE 11: APLICACIÓN PRÁCTICA -->
+        <div class="slide">
+            <h2>🌍 Aplicación Práctica</h2>
+            
+            <div class="escenario">
+                <div class="escenario-icono">🔬</div>
+                <div class="escenario-titulo">Situación: Observas una célula con microscopio</div>
+                <div class="escenario-descripcion">Ves una célula con forma rectangular, tiene una pared celular y estructuras verdes en su interior.</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <button class="boton" onclick="verificarAplicacion(this, true, '¡Correcto! Es vegetal porque tiene pared celular y cloroplastos.')">🌿 Es vegetal</button>
+                    <button class="boton" onclick="verificarAplicacion(this, false, '¡No! Las células animales no tienen pared celular ni son verdes.')">🐕 Es animal</button>
+                </div>
+                <div id="retroalimentacion-aplic" class="retroalimentacion"></div>
+            </div>
+
+            <div class="escenario">
+                <div class="escenario-icono">💉</div>
+                <div class="escenario-titulo">Situación: Célula sin forma definida, con membrana flexible</div>
+                <div class="escenario-descripcion">Observas una célula redonda, sin pared celular externa rígida, sin estructuras verdes.</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <button class="boton" onclick="verificarAplicacion(this, false, '¡No! Las vegetales tienen características muy diferentes.')">🌿 Es vegetal</button>
+                    <button class="boton correcto" onclick="verificarAplicacion(this, true, '¡Exacto! Es animal porque tiene membrana flexible y sin pared rígida.')">🐕 Es animal</button>
+                </div>
+                <div id="retroalimentacion-aplic2" class="retroalimentacion"></div>
+            </div>
+
+            <div class="contador">11 / 13</div>
+        </div>
+
+        <!-- SLIDE 12: REPASO FINAL -->
+        <div class="slide">
+            <h2>📋 Repaso Rápido Final</h2>
+            
+            <div style="margin-bottom: 15px;">
+                <p style="font-weight: bold; margin-bottom: 12px;">❓ ¿Quién controla toda la actividad de la célula?</p>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Membrana celular</div>
+                <div class="opcion" onclick="verificarRepaso(this, true)">Núcleo</div>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Citoplasma</div>
+                <div id="retroalimentacion-r1" class="retroalimentacion"></div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <p style="font-weight: bold; margin-bottom: 12px;">❓ ¿Cuál es la principal diferencia entre célula animal y vegetal?</p>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Tamaño similar</div>
+                <div class="opcion" onclick="verificarRepaso(this, true)">Pared, cloroplastos, vacuola</div>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Sin núcleo</div>
+                <div id="retroalimentacion-r2" class="retroalimentacion"></div>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <p style="font-weight: bold; margin-bottom: 12px;">❓ ¿Qué realiza la fotosíntesis en una célula vegetal?</p>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Núcleo</div>
+                <div class="opcion" onclick="verificarRepaso(this, true)">Cloroplastos</div>
+                <div class="opcion" onclick="verificarRepaso(this, false)">Vacuola</div>
+                <div id="retroalimentacion-r3" class="retroalimentacion"></div>
+            </div>
+
+            <div class="contador">12 / 13</div>
+        </div>
+
+        <!-- SLIDE 13: CIERRE CON METACOGNICIÓN -->
+        <div class="slide">
+            <h2>🎓 ¿Qué Aprendiste Hoy?</h2>
+            
+            <div class="grupo-reflexion">
+                <p style="font-weight: bold; margin-bottom: 12px;">Reflexión: Marca la opción que mejor describe tu aprendizaje:</p>
+                <div class="opcion-reflexion" onclick="marcarReflexion(this, 'Aprendí muy bien sobre LA CÉLULA')">
+                    ✨ Aprendí muy bien sobre LA CÉLULA
+                </div>
+                <div class="opcion-reflexion" onclick="marcarReflexion(this, 'Entendí bien pero necesito repasar los tipos de células')">
+                    📚 Entendí bien pero necesito repasar tipos de células
+                </div>
+                <div class="opcion-reflexion" onclick="marcarReflexion(this, 'Debo repasar las funciones y partes de la célula')">
+                    🔄 Debo repasar funciones y partes
+                </div>
+                <div id="retroalimentacion-metacog" class="retroalimentacion"></div>
+            </div>
+
+            <div class="sello-logro">
+                <div class="icono-sello">🏆</div>
+                <div class="texto-sello">¡LO LOGRASTE!</div>
+                <div class="subtexto-sello">Has completado tu viaje por el mundo celular</div>
+                <p style="font-size: 1.1em; color: var(--naranja-quemado); margin-top: 10px;">¡Ahora eres un experto en células! 🔬</p>
+            </div>
+
+            <div class="contador">13 / 13</div>
+        </div>
+    </div>
+
+    <script>
+        let slideActual = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function renderizarSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('activo');
+            });
+            slides[slideActual].classList.add('activo');
+        }
+
+        function cambiarSlide(direccion) {
+            slideActual += direccion;
+            if (slideActual < 0) slideActual = slides.length - 1;
+            if (slideActual >= slides.length) slideActual = 0;
+            renderizarSlide();
+        }
+
+        // FUNCIONES INTERACTIVAS
+
+        function mostrarDetalle(elemento, texto) {
+            const div = document.getElementById('detalle-objetivo');
+            if (div.innerHTML.includes(texto)) {
+                div.innerHTML = '';
+                div.classList.remove('activa');
+            } else {
+                div.innerHTML = `<strong>✅ ${texto}</strong>`;
+                div.classList.add('activa', 'correcta');
+            }
+        }
+
+        function mostrarPista(elemento) {
+            const pista = elemento.querySelector('.pista');
+            pista.classList.toggle('mostrada');
+        }
+
+        function abrirModal(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        function cerrarModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function abrirModalEspecial(id) {
+            document.getElementById(id).style.display = 'block';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        const funcionesData = [
+            { icon: '🍽️', titulo: 'NUTRICIÓN', desc: 'La célula obtiene alimento y energía del exterior para vivir y funcionar.' },
+            { icon: '📈', titulo: 'CRECIMIENTO', desc: 'La célula aumenta de tamaño mediante la acumulación de sustancias y la síntesis de moléculas.' },
+            { icon: '👶', titulo: 'REPRODUCCIÓN', desc: 'La célula se divide en dos nuevas células idénticas. Es cómo se generan nuevas células.' },
+            { icon: '🧬', titulo: 'HERENCIA', desc: 'El núcleo contiene ADN que transmite información genética a las nuevas células.' }
+        ];
+
+        function mostrarFuncion(index) {
+            const div = document.getElementById('detalle-funcion');
+            div.innerHTML = `<strong>${funcionesData[index].icon} ${funcionesData[index].titulo}</strong><p>${funcionesData[index].desc}</p>`;
+            div.classList.add('activa', 'correcta');
+        }
+
+        function mostrarDiferencia(elemento) {
+            const div = document.getElementById('diferencia-vegetal');
+            const texto = '🟢 Las células vegetales tienen: PARED CELULAR (rígida), CLOROPLASTOS (verdes para fotosíntesis) y VACUOLA GRANDE (almacena agua). ¡Esto las hace especiales!';
+            if (div.innerHTML.includes('PARED CELULAR')) {
+                div.innerHTML = '';
+                div.classList.remove('activa');
+            } else {
+                div.innerHTML = `<strong>✅ ${texto}</strong>`;
+                div.classList.add('activa', 'correcta');
+            }
+        }
+
+        function verificarRespuesta(elemento, esCorrecta, mensaje) {
+            if (elemento.classList.contains('respondido')) return;
+            
+            elemento.classList.add('respondido');
+            const id = elemento.parentElement.querySelector('.retroalimentacion').id;
+            const retroDiv = document.getElementById(id);
+            
+            if (esCorrecta) {
+                elemento.classList.add('correcta');
+                retroDiv.innerHTML = `<strong>✅ ¡Correcto! </strong>${mensaje}`;
+                retroDiv.classList.add('activa', 'correcta');
+            } else {
+                elemento.classList.add('incorrecta');
+                retroDiv.innerHTML = `<strong>❌ Intenta de nuevo</strong> ${mensaje}`;
+                retroDiv.classList.add('activa', 'incorrecta');
+            }
+        }
+
+        let juegoData = {
+            currentItem: null,
+            respuestasCorrectas: 0,
+            totalItems: 6
+        };
+
+        function mostrarOpcionesJuego(elemento, nombre, icon) {
+            juegoData.currentItem = {
+                elemento: elemento,
+                nombre: nombre,
+                icon: icon,
+                categoriaCorrecta: ['🧱', '🟢', '⬜', '🍃'].includes(icon) ? 'vegetal' : 'animal'
+            };
+
+            const modal = document.getElementById('modal-juego');
+            const pregunta = document.getElementById('pregunta-juego');
+            pregunta.innerHTML = `¿${icon} "${nombre}" es de un ANIMAL o VEGETAL?`;
+            
+            document.getElementById('retro-juego').style.display = 'none';
+            document.getElementById('retro-juego').innerHTML = '';
+            
+            modal.style.display = 'block';
+        }
+
+        function responderJuego(btn, categoriaElegida) {
+            const esCorrecta = categoriaElegida === juegoData.currentItem.categoriaCorrecta;
+            const retroDiv = document.getElementById('retro-juego');
+
+            if (esCorrecta) {
+                juegoData.respuestasCorrectas++;
+                juegoData.currentItem.elemento.classList.add('correcto');
+                juegoData.currentItem.elemento.style.pointerEvents = 'none';
+                juegoData.currentItem.elemento.style.opacity = '0.6';
+                
+                retroDiv.innerHTML = `✅ <strong>¡Correcto!</strong> "${juegoData.currentItem.nombre}" es de un ${categoriaElegida === 'animal' ? 'ANIMAL' : 'VEGETAL'}.`;
+                retroDiv.style.color = '#155724';
+                retroDiv.style.display = 'block';
+
+                setTimeout(() => {
+                    document.getElementById('modal-juego').style.display = 'none';
+                    verificarProgreso();
+                }, 1500);
+            } else {
+                retroDiv.innerHTML = `❌ <strong>No es correcto.</strong> Intenta de nuevo. "${juegoData.currentItem.nombre}" es de un ${categoriaElegida === 'animal' ? 'VEGETAL' : 'ANIMAL'}.`;
+                retroDiv.style.color = '#721c24';
+                retroDiv.style.display = 'block';
+            }
+        }
+
+        function verificarProgreso() {
+            if (juegoData.respuestasCorrectas === juegoData.totalItems) {
+                const retroDiv = document.getElementById('retroalimentacion-juego');
+                retroDiv.innerHTML = `<strong style="font-size: 1.2em;">🎉 ¡EXCELENTE! Clasificaste todas correctamente</strong><p>¡Demostraste que entiendes perfectamente las diferencias entre células animales y vegetales!</p>`;
+                retroDiv.classList.add('activa', 'correcta');
+                
+                document.getElementById('progreso-juego').style.display = 'block';
+                document.getElementById('texto-progreso').textContent = `✅ ${juegoData.respuestasCorrectas}/${juegoData.totalItems} clasificadas correctamente`;
+            } else {
+                const restantes = juegoData.totalItems - juegoData.respuestasCorrectas;
+                document.getElementById('progreso-juego').style.display = 'block';
+                document.getElementById('texto-progreso').textContent = `✅ ${juegoData.respuestasCorrectas}/${juegoData.totalItems} correctas - ${restantes} por clasificar`;
+            }
+        }
+
+        function reiniciarJuego() {
+            juegoData.respuestasCorrectas = 0;
+            juegoData.currentItem = null;
+            
+            const items = document.querySelectorAll('.juego-item');
+            items.forEach(item => {
+                item.classList.remove('correcto');
+                item.style.pointerEvents = 'auto';
+                item.style.opacity = '1';
+            });
+
+            document.getElementById('modal-juego').style.display = 'none';
+            document.getElementById('retroalimentacion-juego').innerHTML = '';
+            document.getElementById('retroalimentacion-juego').classList.remove('activa', 'correcta');
+            document.getElementById('progreso-juego').style.display = 'none';
+        }
+
+        function verificarAplicacion(elemento, esCorrecta, mensaje) {
+            if (elemento.classList.contains('respondido')) return;
+
+            elemento.classList.add('respondido');
+            const id = elemento.parentElement.parentElement.querySelector('.retroalimentacion').id;
+            const retroDiv = document.getElementById(id);
+
+            if (esCorrecta) {
+                elemento.classList.add('correcta');
+                retroDiv.innerHTML = `<strong>✅ ¡Correcto! </strong>${mensaje}`;
+                retroDiv.classList.add('activa', 'correcta');
+            } else {
+                elemento.classList.add('incorrecta');
+                retroDiv.innerHTML = `<strong>❌ No es correcto</strong> ${mensaje}`;
+                retroDiv.classList.add('activa', 'incorrecta');
+            }
+        }
+
+        function verificarRepaso(elemento, esCorrecta) {
+            if (elemento.classList.contains('correcta')) return;
+            
+            const id = elemento.parentElement.parentElement.querySelector('.retroalimentacion').id;
+            const retroDiv = document.getElementById(id);
+
+            if (esCorrecta) {
+                elemento.classList.add('correcta');
+                elemento.classList.remove('incorrecta');
+                
+                const opciones = elemento.parentElement.querySelectorAll('.opcion');
+                opciones.forEach(opcion => {
+                    if (opcion !== elemento) {
+                        opcion.style.pointerEvents = 'none';
+                        opcion.style.opacity = '0.5';
+                    }
+                });
+                
+                retroDiv.innerHTML = '<strong>✅ ¡CORRECTO! Excelente, demuestras dominar este tema perfectamente.</strong>';
+                retroDiv.classList.add('activa', 'correcta');
+                retroDiv.classList.remove('incorrecta');
+            } else {
+                elemento.classList.add('incorrecta');
+                retroDiv.innerHTML = '<strong>❌ No es la respuesta correcta.</strong><br><em style="color: var(--naranja-quemado);">💡 Intenta de nuevo con otra opción. ¡Tú puedes lograrlo!</em>';
+                retroDiv.classList.add('activa', 'incorrecta');
+                retroDiv.classList.remove('correcta');
+            }
+        }
+
+        function marcarReflexion(elemento, respuesta) {
+            const opciones = elemento.parentElement.querySelectorAll('.opcion-reflexion');
+            opciones.forEach(opcion => opcion.classList.remove('seleccionada'));
+            elemento.classList.add('seleccionada');
+            
+            const retroDiv = document.getElementById('retroalimentacion-metacog');
+            if (retroDiv) {
+                retroDiv.style.display = 'block';
+                retroDiv.innerHTML = `<strong>✅ Excelente reflexión:</strong> "${respuesta}" - Es importante conocer tu propio aprendizaje.`;
+            }
+        }
+
+        // Inicializar
+        renderizarSlide();
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') cambiarSlide(-1);
+            if (e.key === 'ArrowRight') cambiarSlide(1);
+        });
+    </script>
+</body>
+</html>
