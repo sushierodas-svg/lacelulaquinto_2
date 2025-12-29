@@ -63,9 +63,11 @@
             to { opacity: 1; }
         }
 
-        /* NAVEGACIÓN CON FLECHAS */
+        /* ════════════════════════════════════════════════════ */
+        /* NAVEGACIÓN CON FLECHAS - MEJORADA Y MÁS VISIBLE ✅ */
+        /* ════════════════════════════════════════════════════ */
         .navegacion {
-            position: absolute;
+            position: fixed;
             width: 100%;
             height: 100%;
             display: flex;
@@ -74,34 +76,38 @@
             pointer-events: none;
             left: 0;
             top: 0;
+            z-index: 500;
+            padding: 0 20px;
         }
 
         .flecha {
-            width: 60px;
-            height: 60px;
-            background: var(--naranja-quemado);
-            color: var(--blanco);
-            border: none;
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #ff7f2a, var(--naranja-quemado));
+            color: white;
+            border: 4px solid white;
             border-radius: 50%;
-            font-size: 28px;
+            font-size: 36px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             pointer-events: all;
             transition: all 0.3s ease;
-            margin: 0 15px;
-            box-shadow: 0 4px 15px rgba(219, 96, 21, 0.3);
+            box-shadow: 0 8px 25px rgba(219, 96, 21, 0.5), inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            flex-shrink: 0;
         }
 
         .flecha:hover {
-            background: var(--rojo-ladrillo);
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(219, 96, 21, 0.5);
+            background: linear-gradient(135deg, var(--rojo-ladrillo), #7d2817);
+            transform: scale(1.2);
+            box-shadow: 0 12px 35px rgba(219, 96, 21, 0.7), inset 0 -2px 5px rgba(0, 0, 0, 0.3);
         }
 
         .flecha:active {
             transform: scale(0.95);
+            box-shadow: 0 4px 15px rgba(219, 96, 21, 0.5), inset 0 -2px 5px rgba(0, 0, 0, 0.2);
         }
 
         /* CONTADOR DE DIAPOSITIVAS */
@@ -115,6 +121,7 @@
             background: var(--amarillo-dorado);
             padding: 8px 15px;
             border-radius: 20px;
+            z-index: 10;
         }
 
         /* ESTILOS DE TEXTO */
@@ -727,8 +734,8 @@
 <body>
     <div class="contenedor-principal">
         <div class="navegacion">
-            <button class="flecha" onclick="cambiarSlide(-1)">⬅️</button>
-            <button class="flecha" onclick="cambiarSlide(1)">➡️</button>
+            <button class="flecha" onclick="cambiarSlide(-1)" title="Anterior">⬅️</button>
+            <button class="flecha" onclick="cambiarSlide(1)" title="Siguiente">➡️</button>
         </div>
 
         <!-- SLIDE 1: PORTADA -->
